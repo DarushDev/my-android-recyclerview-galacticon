@@ -2,6 +2,8 @@ package com.example.myandroidrecyclerviewgalacticon;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuInflater;
 
@@ -12,12 +14,17 @@ public class MainActivity extends AppCompatActivity implements ImageRequester.Im
 
     private ArrayList<Photo> mPhotosList;
     private ImageRequester mImageRequester;
+    private RecyclerView mRecyclerView;
+    private LinearLayoutManager mLinearLayoutManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        mRecyclerView = (RecyclerView) findViewById(R.id.recyclerView);
+        mLinearLayoutManager = new LinearLayoutManager(this);
+        mRecyclerView.setLayoutManager(mLinearLayoutManager);
 
         mPhotosList = new ArrayList<>();
         mImageRequester = new ImageRequester(this);

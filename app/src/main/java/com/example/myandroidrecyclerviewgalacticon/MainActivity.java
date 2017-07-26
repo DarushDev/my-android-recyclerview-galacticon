@@ -32,6 +32,9 @@ public class MainActivity extends AppCompatActivity implements ImageRequester.Im
 
         mAdapter = new RecyclerAdapter(mPhotosList);
         mRecyclerView.setAdapter(mAdapter);
+
+        setRecyclerViewScrollListener();
+
     }
 
     @Override
@@ -48,6 +51,23 @@ public class MainActivity extends AppCompatActivity implements ImageRequester.Im
             requestPhoto();
         }
 
+    }
+
+    private int getLastVisibleItemPosition() {
+        return mLinearLayoutManager.findLastVisibleItemPosition();
+    }
+
+    private void setRecyclerViewScrollListener() {
+        mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                int totalItemCount = mRecyclerView.getLayoutManager().getItemCount();
+                if (!mImageRequester.isLoadingData() && totalItemCount == getLastVisibleItemPosition() + 1) {
+                    requestPhoto();
+                }
+            }
+        });
     }
 
     private void requestPhoto() {

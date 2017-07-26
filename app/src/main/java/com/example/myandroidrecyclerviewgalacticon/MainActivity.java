@@ -16,6 +16,7 @@ public class MainActivity extends AppCompatActivity implements ImageRequester.Im
     private ImageRequester mImageRequester;
     private RecyclerView mRecyclerView;
     private LinearLayoutManager mLinearLayoutManager;
+    private RecyclerAdapter mAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,6 +29,9 @@ public class MainActivity extends AppCompatActivity implements ImageRequester.Im
 
         mPhotosList = new ArrayList<>();
         mImageRequester = new ImageRequester(this);
+
+        mAdapter = new RecyclerAdapter(mPhotosList);
+        mRecyclerView.setAdapter(mAdapter);
     }
 
     @Override
@@ -40,6 +44,9 @@ public class MainActivity extends AppCompatActivity implements ImageRequester.Im
     @Override
     protected void onStart() {
         super.onStart();
+        if (mPhotosList.size() == 0) {
+            requestPhoto();
+        }
 
     }
 
@@ -60,8 +67,9 @@ public class MainActivity extends AppCompatActivity implements ImageRequester.Im
             @Override
             public void run() {
                 mPhotosList.add(newPhoto);
+                mAdapter.notifyItemInserted(mPhotosList.size());
             }
         });
-
     }
+
 }
